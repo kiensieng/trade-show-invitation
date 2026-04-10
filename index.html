@@ -453,23 +453,27 @@
             font-size: 0.95rem;
         }
 
-        .close-btn {
-            margin-top: 20px;
-            padding: 12px 40px;
-            background: transparent;
-            border: 1px solid rgba(212, 175, 55, 0.5);
-            color: #d4af37;
+        .gold-btn {
+            display: inline-block;
+            margin-top: 18px;
+            padding: 12px 30px;
+            background: linear-gradient(135deg, #d4af37 0%, #e8c547 50%, #d4af37 100%);
+            color: #221e1e;
             font-family: 'Georgia', serif;
-            font-size: 0.9rem;
-            letter-spacing: 2px;
+            font-size: 0.85rem;
+            font-weight: bold;
+            letter-spacing: 1px;
+            text-decoration: none;
+            border-radius: 4px;
             cursor: pointer;
             transition: all 0.3s ease;
-            border-radius: 4px;
+            box-shadow: 0 3px 10px rgba(212, 175, 55, 0.3);
         }
 
-        .close-btn:hover {
-            background: rgba(212, 175, 55, 0.1);
-            border-color: #d4af37;
+        .gold-btn:hover {
+            background: linear-gradient(135deg, #e8c547 0%, #f0d060 50%, #e8c547 100%);
+            box-shadow: 0 5px 15px rgba(212, 175, 55, 0.5);
+            transform: translateY(-1px);
         }
 
         /* Confetti */
@@ -614,9 +618,7 @@
                     <img src="mlb-logo.png" alt="Mdm Ling Bakery" style="max-width: 180px; margin-top: 5px; display: block; margin-left: auto; margin-right: auto;">
                 </p>
                 <p class="cta-text">Come by for a tasting experience</p>
-                <p class="cta-text" style="font-style: normal; margin-top: 12px; font-size: 0.85rem;">
-                    <a href="https://fha.imasia-passport.com/en/user/register/?utm_medium=website&utm_source=site_banner&utm_campaign=Visitor_Registration&utm_content=Header_Button" target="_blank" style="color: #d4af37; text-decoration: underline;">Register Online Visitor Registration - FHA Events</a>
-                </p>
+                <a href="https://fha.imasia-passport.com/en/user/register/?utm_medium=website&utm_source=site_banner&utm_campaign=Visitor_Registration&utm_content=Header_Button" target="_blank" class="gold-btn">Get Your Free FHA Pass Here</a>
             </div>
             <!--
                 ============================================
@@ -625,7 +627,6 @@
             -->
 
         </div>
-        <button class="close-btn" onclick="closeInvitation()">CLOSE</button>
     </div>
 
     <!-- Confetti container -->
