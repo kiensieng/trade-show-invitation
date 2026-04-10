@@ -102,12 +102,12 @@
         /* Envelope body */
         .envelope-body {
             position: absolute;
-            bottom: 0;
+            top: 0;
             width: 340px;
-            height: 200px;
+            height: 220px;
             background: linear-gradient(180deg, #F1DBD8 0%, #e4c9c6 100%);
             border-radius: 0 0 8px 8px;
-            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.4);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.15);
             z-index: 3;
             overflow: hidden;
         }
@@ -199,10 +199,10 @@
             left: 0;
             width: 0;
             height: 0;
-            border-bottom: 200px solid #f0d6d3;
+            border-bottom: 220px solid #f0d6d3;
             border-left: 170px solid transparent;
             border-right: 0 solid transparent;
-            z-index: 2;
+            z-index: 4;
         }
 
         .envelope-inner-right {
@@ -211,10 +211,10 @@
             right: 0;
             width: 0;
             height: 0;
-            border-bottom: 200px solid #e6cbc8;
+            border-bottom: 220px solid #e6cbc8;
             border-right: 170px solid transparent;
             border-left: 0 solid transparent;
-            z-index: 2;
+            z-index: 4;
         }
 
         /* === CARD (slides out) === */
@@ -506,7 +506,7 @@
             }
             .envelope-body {
                 width: 280px;
-                height: 170px;
+                height: 190px;
             }
             .envelope-flap {
                 border-left: 140px solid transparent;
@@ -514,11 +514,11 @@
                 border-top: 110px solid #e8ccc9;
             }
             .envelope-inner-left {
-                border-bottom: 170px solid #f0d6d3;
+                border-bottom: 190px solid #f0d6d3;
                 border-left: 140px solid transparent;
             }
             .envelope-inner-right {
-                border-bottom: 170px solid #e6cbc8;
+                border-bottom: 190px solid #e6cbc8;
                 border-right: 140px solid transparent;
             }
             .card {
