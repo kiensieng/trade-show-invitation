@@ -392,11 +392,11 @@
             border-radius: 4px;
         }
 
-        /* Placeholder for invitation image */
+        /* Invitation card inner */
         .invitation-placeholder {
             width: 100%;
             min-height: 350px;
-            border: 2px dashed rgba(212, 175, 55, 0.4);
+            border: 2px solid #d4af37;
             border-radius: 8px;
             display: flex;
             flex-direction: column;
@@ -404,6 +404,21 @@
             justify-content: center;
             margin-bottom: 25px;
             background: rgba(212, 175, 55, 0.03);
+            position: relative;
+            padding: 40px 30px;
+        }
+
+        /* Luxurious double gold border */
+        .invitation-placeholder::before {
+            content: '';
+            position: absolute;
+            top: 6px;
+            left: 6px;
+            right: 6px;
+            bottom: 6px;
+            border: 1px solid rgba(212, 175, 55, 0.5);
+            border-radius: 4px;
+            pointer-events: none;
         }
 
         .invitation-placeholder h1 {
@@ -414,10 +429,8 @@
             margin-bottom: 10px;
         }
 
-        .invitation-placeholder h2 {
-            font-size: 2rem;
-            color: #1a1a2e;
-            margin-bottom: 15px;
+        .invitation-placeholder img {
+            margin-bottom: 10px;
         }
 
         .invitation-placeholder .inv-divider {
@@ -574,7 +587,7 @@
             -->
             <div class="invitation-placeholder">
                 <h1>You're Invited</h1>
-                <h2>Food &amp; Hotel Asia 2026</h2>
+                <img src="https://s48331.pcdn.co/wp-content/uploads/2025/07/FHA26-Logo-Long.png" alt="Food &amp; Hotel Asia 2026" style="max-width: 320px; width: 80%; margin-bottom: 10px;">
                 <div class="inv-divider"></div>
                 <p>
                     <strong>Date:</strong> 21 - 24 April 2026<br>
@@ -582,7 +595,7 @@
                     <strong>Booth:</strong> 6L1-08<br><br>
                     <strong>Hosted by:</strong> Mdm Ling Bakery
                 </p>
-                <p class="cta-text">We would be honoured by your presence</p>
+                <p class="cta-text">Come by for a tasting experience</p>
                 <p class="cta-text" style="font-style: normal; margin-top: 12px; font-size: 0.85rem;">
                     <a href="https://fha.imasia-passport.com/en/user/register/?utm_medium=website&utm_source=site_banner&utm_campaign=Visitor_Registration&utm_content=Header_Button" target="_blank" style="color: #d4af37; text-decoration: underline;">Register Online Visitor Registration - FHA Events</a>
                 </p>
