@@ -1,0 +1,664 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>You're Invited!</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+            font-family: 'Georgia', serif;
+            overflow: hidden;
+        }
+
+        /* Floating particles background */
+        .particles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .particle {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            background: rgba(212, 175, 55, 0.3);
+            border-radius: 50%;
+            animation: float linear infinite;
+        }
+
+        @keyframes float {
+            0% { transform: translateY(100vh) rotate(0deg); opacity: 0; }
+            10% { opacity: 1; }
+            90% { opacity: 1; }
+            100% { transform: translateY(-10vh) rotate(720deg); opacity: 0; }
+        }
+
+        .greeting {
+            color: #d4af37;
+            font-size: 1.5rem;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            margin-bottom: 40px;
+            opacity: 0;
+            animation: fadeIn 1.5s ease forwards 0.5s;
+            z-index: 1;
+            text-align: center;
+            text-shadow: 0 0 20px rgba(212, 175, 55, 0.3);
+        }
+
+        @keyframes fadeIn {
+            to { opacity: 1; }
+        }
+
+        .hint {
+            color: rgba(212, 175, 55, 0.6);
+            font-size: 0.9rem;
+            letter-spacing: 2px;
+            margin-top: 30px;
+            opacity: 0;
+            animation: fadeIn 1.5s ease forwards 1.5s, pulse 2s ease-in-out infinite 2s;
+            z-index: 1;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 0.6; }
+            50% { opacity: 1; }
+        }
+
+        /* === ENVELOPE === */
+        .envelope-wrapper {
+            position: relative;
+            z-index: 1;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+        }
+
+        .envelope-wrapper:hover {
+            transform: scale(1.03);
+        }
+
+        .envelope {
+            position: relative;
+            width: 340px;
+            height: 220px;
+            perspective: 800px;
+        }
+
+        /* Envelope body */
+        .envelope-body {
+            position: absolute;
+            bottom: 0;
+            width: 340px;
+            height: 200px;
+            background: linear-gradient(180deg, #f5e6c8 0%, #e8d5a8 100%);
+            border-radius: 0 0 8px 8px;
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.4);
+            z-index: 3;
+            overflow: hidden;
+        }
+
+        .envelope-body::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, transparent, #d4af37, transparent);
+        }
+
+        /* Gold border trim on envelope */
+        .envelope-body::after {
+            content: '';
+            position: absolute;
+            bottom: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 60px;
+            height: 60px;
+            border: 2px solid rgba(212, 175, 55, 0.3);
+            border-radius: 50%;
+        }
+
+        /* Wax seal */
+        .seal {
+            position: absolute;
+            bottom: 18px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 44px;
+            height: 44px;
+            background: radial-gradient(circle at 35% 35%, #c0392b, #8b1a1a);
+            border-radius: 50%;
+            z-index: 10;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.3), inset 0 1px 2px rgba(255, 255, 255, 0.2);
+            transition: opacity 0.5s ease;
+        }
+
+        .seal span {
+            color: #f5e6c8;
+            font-size: 1.1rem;
+            font-weight: bold;
+            font-family: serif;
+        }
+
+        /* Envelope flap (top triangle) */
+        .envelope-flap {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 0;
+            height: 0;
+            border-left: 170px solid transparent;
+            border-right: 170px solid transparent;
+            border-top: 130px solid #e0c88c;
+            z-index: 5;
+            transform-origin: top center;
+            transition: transform 0.8s ease;
+            filter: drop-shadow(0 2px 3px rgba(0, 0, 0, 0.1));
+        }
+
+        .envelope-flap::after {
+            content: '';
+            position: absolute;
+            top: -130px;
+            left: -170px;
+            width: 0;
+            height: 0;
+            border-left: 170px solid transparent;
+            border-right: 170px solid transparent;
+            border-top: 130px solid transparent;
+            border-bottom: 0;
+            background: linear-gradient(180deg, rgba(212, 175, 55, 0.1) 0%, transparent 100%);
+        }
+
+        /* Inner triangles for depth */
+        .envelope-inner-left {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 0;
+            border-bottom: 200px solid #eedcb3;
+            border-left: 170px solid transparent;
+            border-right: 0 solid transparent;
+            z-index: 2;
+        }
+
+        .envelope-inner-right {
+            position: absolute;
+            bottom: 0;
+            right: 0;
+            width: 0;
+            height: 0;
+            border-bottom: 200px solid #e8d1a0;
+            border-right: 170px solid transparent;
+            border-left: 0 solid transparent;
+            z-index: 2;
+        }
+
+        /* === CARD (slides out) === */
+        .card {
+            position: absolute;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 300px;
+            height: 180px;
+            background: #fff;
+            border-radius: 4px;
+            z-index: 4;
+            transition: transform 1s cubic-bezier(0.34, 1.56, 0.64, 1) 0.4s;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+
+        /* === OPENED STATE === */
+        .envelope-wrapper.opened .envelope-flap {
+            transform: rotateX(180deg);
+            z-index: 1;
+        }
+
+        .envelope-wrapper.opened .seal {
+            opacity: 0;
+        }
+
+        .envelope-wrapper.opened .card {
+            transform: translateX(-50%) translateY(-280px);
+        }
+
+        .envelope-wrapper.opened .hint-text {
+            opacity: 0;
+        }
+
+        /* === INVITATION CARD CONTENT === */
+        .card-content {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            background: linear-gradient(135deg, #fff 0%, #faf6ee 100%);
+            border: 2px solid #d4af37;
+            position: relative;
+        }
+
+        .card-content::before,
+        .card-content::after {
+            content: '';
+            position: absolute;
+            width: 30px;
+            height: 30px;
+            border: 1px solid rgba(212, 175, 55, 0.4);
+        }
+
+        .card-content::before {
+            top: 8px;
+            left: 8px;
+            border-right: none;
+            border-bottom: none;
+        }
+
+        .card-content::after {
+            bottom: 8px;
+            right: 8px;
+            border-left: none;
+            border-top: none;
+        }
+
+        .card-content h2 {
+            color: #1a1a2e;
+            font-size: 0.7rem;
+            letter-spacing: 4px;
+            text-transform: uppercase;
+            margin-bottom: 6px;
+            color: #d4af37;
+        }
+
+        .card-content h1 {
+            color: #1a1a2e;
+            font-size: 1.3rem;
+            margin-bottom: 8px;
+            text-align: center;
+            line-height: 1.3;
+        }
+
+        .card-content .divider {
+            width: 60px;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, #d4af37, transparent);
+            margin: 6px 0;
+        }
+
+        .card-content .details {
+            color: #555;
+            font-size: 0.75rem;
+            text-align: center;
+            line-height: 1.6;
+        }
+
+        .card-content .details strong {
+            color: #1a1a2e;
+        }
+
+        /* === EXPANDED INVITATION (appears after card slides out) === */
+        .invitation-full {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.9);
+            z-index: 100;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.6s ease;
+            flex-direction: column;
+        }
+
+        .invitation-full.visible {
+            opacity: 1;
+            pointer-events: all;
+        }
+
+        .invitation-image-container {
+            max-width: 700px;
+            width: 90%;
+            background: linear-gradient(135deg, #fff 0%, #faf6ee 100%);
+            border-radius: 12px;
+            padding: 40px;
+            box-shadow: 0 30px 80px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(212, 175, 55, 0.3);
+            position: relative;
+            transform: scale(0.8) translateY(30px);
+            transition: transform 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+            text-align: center;
+        }
+
+        .invitation-full.visible .invitation-image-container {
+            transform: scale(1) translateY(0);
+        }
+
+        /* Corner decorations */
+        .invitation-image-container::before,
+        .invitation-image-container::after {
+            content: '';
+            position: absolute;
+            width: 50px;
+            height: 50px;
+            border: 2px solid rgba(212, 175, 55, 0.5);
+        }
+
+        .invitation-image-container::before {
+            top: 15px;
+            left: 15px;
+            border-right: none;
+            border-bottom: none;
+        }
+
+        .invitation-image-container::after {
+            bottom: 15px;
+            right: 15px;
+            border-left: none;
+            border-top: none;
+        }
+
+        .invitation-image-container img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 4px;
+        }
+
+        /* Placeholder for invitation image */
+        .invitation-placeholder {
+            width: 100%;
+            min-height: 350px;
+            border: 2px dashed rgba(212, 175, 55, 0.4);
+            border-radius: 8px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 25px;
+            background: rgba(212, 175, 55, 0.03);
+        }
+
+        .invitation-placeholder h1 {
+            font-size: 1.2rem;
+            letter-spacing: 5px;
+            text-transform: uppercase;
+            color: #d4af37;
+            margin-bottom: 10px;
+        }
+
+        .invitation-placeholder h2 {
+            font-size: 2rem;
+            color: #1a1a2e;
+            margin-bottom: 15px;
+        }
+
+        .invitation-placeholder .inv-divider {
+            width: 80px;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, #d4af37, transparent);
+            margin: 15px 0;
+        }
+
+        .invitation-placeholder p {
+            color: #555;
+            font-size: 1rem;
+            line-height: 1.8;
+        }
+
+        .invitation-placeholder p strong {
+            color: #1a1a2e;
+        }
+
+        .invitation-placeholder .cta-text {
+            margin-top: 20px;
+            color: #d4af37;
+            font-style: italic;
+            font-size: 0.95rem;
+        }
+
+        .close-btn {
+            margin-top: 20px;
+            padding: 12px 40px;
+            background: transparent;
+            border: 1px solid rgba(212, 175, 55, 0.5);
+            color: #d4af37;
+            font-family: 'Georgia', serif;
+            font-size: 0.9rem;
+            letter-spacing: 2px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border-radius: 4px;
+        }
+
+        .close-btn:hover {
+            background: rgba(212, 175, 55, 0.1);
+            border-color: #d4af37;
+        }
+
+        /* Confetti */
+        .confetti-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 200;
+        }
+
+        .confetti-piece {
+            position: absolute;
+            top: -20px;
+            width: 10px;
+            height: 10px;
+            animation: confetti-fall linear forwards;
+        }
+
+        @keyframes confetti-fall {
+            0% { transform: translateY(-20px) rotate(0deg); opacity: 1; }
+            100% { transform: translateY(100vh) rotate(720deg); opacity: 0; }
+        }
+
+        /* Responsive */
+        @media (max-width: 480px) {
+            .envelope {
+                width: 280px;
+                height: 190px;
+            }
+            .envelope-body {
+                width: 280px;
+                height: 170px;
+            }
+            .envelope-flap {
+                border-left: 140px solid transparent;
+                border-right: 140px solid transparent;
+                border-top: 110px solid #e0c88c;
+            }
+            .envelope-inner-left {
+                border-bottom: 170px solid #eedcb3;
+                border-left: 140px solid transparent;
+            }
+            .envelope-inner-right {
+                border-bottom: 170px solid #e8d1a0;
+                border-right: 140px solid transparent;
+            }
+            .card {
+                width: 250px;
+                height: 155px;
+            }
+            .greeting {
+                font-size: 1.1rem;
+            }
+            .invitation-image-container {
+                padding: 25px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Floating particles -->
+    <div class="particles" id="particles"></div>
+
+    <!-- Greeting text -->
+    <p class="greeting">You Have Been Specially Invited</p>
+
+    <!-- Envelope -->
+    <div class="envelope-wrapper" id="envelope" onclick="openEnvelope()">
+        <div class="envelope">
+            <div class="envelope-flap"></div>
+            <div class="card">
+                <div class="card-content">
+                    <h2>You're Invited</h2>
+                    <h1>Trade Show 2026</h1>
+                    <div class="divider"></div>
+                    <p class="details">
+                        <strong>Date:</strong> June 15-17, 2026<br>
+                        <strong>Venue:</strong> Convention Center<br>
+                        <strong>Booth:</strong> #142
+                    </p>
+                </div>
+            </div>
+            <div class="envelope-inner-left"></div>
+            <div class="envelope-inner-right"></div>
+            <div class="envelope-body"></div>
+            <div class="seal"><span>M</span></div>
+        </div>
+    </div>
+
+    <!-- Hint text -->
+    <p class="hint">Click the envelope to open</p>
+
+    <!-- Full invitation overlay -->
+    <div class="invitation-full" id="invitationFull">
+        <div class="invitation-image-container">
+
+            <!--
+                ============================================
+                REPLACE THE SECTION BELOW WITH YOUR IMAGE:
+
+                Option 1 - Local image:
+                <img src="your-invitation-image.jpg" alt="Trade Show Invitation">
+
+                Option 2 - Hosted image URL:
+                <img src="https://your-domain.com/invitation.jpg" alt="Trade Show Invitation">
+                ============================================
+            -->
+            <div class="invitation-placeholder">
+                <h1>You're Invited</h1>
+                <h2>Trade Show 2026</h2>
+                <div class="inv-divider"></div>
+                <p>
+                    <strong>Date:</strong> June 15 - 17, 2026<br>
+                    <strong>Time:</strong> 9:00 AM - 6:00 PM<br>
+                    <strong>Venue:</strong> International Convention Center<br>
+                    <strong>Booth:</strong> #142<br><br>
+                    <strong>Hosted by:</strong> MDM Ling Bakery
+                </p>
+                <p class="cta-text">We would be honored by your presence</p>
+            </div>
+            <!--
+                ============================================
+                END OF REPLACEABLE SECTION
+                ============================================
+            -->
+
+        </div>
+        <button class="close-btn" onclick="closeInvitation()">CLOSE</button>
+    </div>
+
+    <!-- Confetti container -->
+    <div class="confetti-container" id="confetti"></div>
+
+    <script>
+        // Create floating background particles
+        (function createParticles() {
+            const container = document.getElementById('particles');
+            for (let i = 0; i < 30; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'particle';
+                particle.style.left = Math.random() * 100 + '%';
+                particle.style.animationDuration = (Math.random() * 8 + 6) + 's';
+                particle.style.animationDelay = (Math.random() * 10) + 's';
+                particle.style.width = (Math.random() * 4 + 2) + 'px';
+                particle.style.height = particle.style.width;
+                container.appendChild(particle);
+            }
+        })();
+
+        let isOpened = false;
+
+        function openEnvelope() {
+            if (isOpened) return;
+            isOpened = true;
+
+            const wrapper = document.getElementById('envelope');
+            wrapper.style.cursor = 'default';
+            wrapper.classList.add('opened');
+
+            // Hide the hint
+            document.querySelector('.hint').style.opacity = '0';
+
+            // Show full invitation after card slides out
+            setTimeout(() => {
+                document.getElementById('invitationFull').classList.add('visible');
+                launchConfetti();
+            }, 1200);
+        }
+
+        function closeInvitation() {
+            document.getElementById('invitationFull').classList.remove('visible');
+        }
+
+        function launchConfetti() {
+            const container = document.getElementById('confetti');
+            const colors = ['#d4af37', '#c0392b', '#1a1a2e', '#e8d5a8', '#f5e6c8', '#fff'];
+
+            for (let i = 0; i < 60; i++) {
+                setTimeout(() => {
+                    const piece = document.createElement('div');
+                    piece.className = 'confetti-piece';
+                    piece.style.left = Math.random() * 100 + '%';
+                    piece.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+                    piece.style.width = (Math.random() * 10 + 5) + 'px';
+                    piece.style.height = (Math.random() * 10 + 5) + 'px';
+                    piece.style.borderRadius = Math.random() > 0.5 ? '50%' : '0';
+                    piece.style.animationDuration = (Math.random() * 2 + 2) + 's';
+                    container.appendChild(piece);
+
+                    setTimeout(() => piece.remove(), 4000);
+                }, i * 30);
+            }
+        }
+    </script>
+
+</body>
+</html>
