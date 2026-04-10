@@ -524,10 +524,32 @@
                 height: 155px;
             }
             .greeting {
-                font-size: 1.1rem;
+                font-size: 1rem;
+                padding: 0 20px;
             }
             .invitation-image-container {
-                padding: 25px;
+                padding: 20px;
+                width: 92%;
+            }
+            .invitation-placeholder {
+                padding: 25px 18px;
+                min-height: 280px;
+            }
+            .invitation-placeholder h1 {
+                font-size: 0.9rem;
+                letter-spacing: 3px;
+            }
+            .invitation-placeholder img {
+                margin-bottom: 6px;
+            }
+            .invitation-placeholder p {
+                font-size: 0.85rem;
+            }
+            .invitation-placeholder .cta-text {
+                font-size: 0.8rem;
+            }
+            .hint {
+                font-size: 0.8rem;
             }
         }
     </style>
@@ -538,7 +560,7 @@
     <div class="particles" id="particles"></div>
 
     <!-- Greeting text -->
-    <p class="greeting">You Have Been Specially Invited</p>
+    <p class="greeting">You've Been Specially Invited!</p>
 
     <!-- Envelope -->
     <div class="envelope-wrapper" id="envelope" onclick="openEnvelope()">
